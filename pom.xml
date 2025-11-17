@@ -10,4 +10,11 @@
         <maven.compiler.release>24</maven.compiler.release>
         <exec.mainClass>com.mycompany.netfix.Netfix</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.0.0</version> <!-- o la versión más reciente -->
+        </dependency>
+    </dependencies>
 </project>
