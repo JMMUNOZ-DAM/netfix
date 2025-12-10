@@ -27,7 +27,6 @@ public class DatabaseManager {
     // ===============================================
     private DatabaseManager() {
         try {
-            // Cargar el driver JDBC (opcional en Java 9+)
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Error cargando el driver JDBC", e);
@@ -113,6 +112,39 @@ public class DatabaseManager {
         }
 
         return stmt;
+    }
+
+    public ResultSet executePreparedQuery(String sql, Object... params) throws SQLException {
+        PreparedStatement stmt = prepareStatement(sql, params);
+        return stmt.executeQuery();
+    }
+
+    boolean executePreparedBoolean(String sql, Object... params) throws SQLException {
+
+        try (PreparedStatement stmt = prepareStatement(sql, params); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+            return false;
+        }
+    }
+
+    public String executePreparedString(String sql, Object... params) throws SQLException {
+
+        try (PreparedStatement stmt = prepareStatement(sql, params); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+            return null;
+        }
+    }
+
+    public int executePreparedUpdate(String sql, Object... params) throws SQLException {
+        try (PreparedStatement stmt = prepareStatement(sql, params)) {
+            return stmt.executeUpdate();
+        }
     }
 
     // ===============================================
